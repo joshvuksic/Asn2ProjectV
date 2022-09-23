@@ -1,6 +1,8 @@
 // Asn2ProjectV.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#define master 1
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -15,6 +17,13 @@ struct STUDENT_DATE {
 
 int main()
 {
+#ifdef master
+	cout << "running master" << endl;
+#endif 
+	#ifndef master
+	cout << "running pre-release" << endl;
+#endif
+
 	vector<STUDENT_DATE> student;
 	ifstream file ("StudentData.txt");
 	string line;
