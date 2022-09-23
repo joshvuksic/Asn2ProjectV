@@ -11,22 +11,37 @@ using namespace std;
 struct STUDENT_DATE {
 	string firstName;
 	string lastName;
+	string email;
 };
 
 int main()
 {
 	vector<STUDENT_DATE> student;
+#ifdef master
 	ifstream file ("StudentData.txt");
+#endif
+#ifndef master
+	ifstream file("StudentData_Emails.txt");
+#endif
 	string line;
 	STUDENT_DATE temp;
 
 	if (file.is_open()) {
 		while (getline(file, line, ',')) {
 			temp.lastName = line;
-			getline(file, line);
-
+			
+	#ifndef master
+			getline(file, line, ',');
 			temp.firstName = line;
+			getline(file, line);
+			temp.email = line;
+	#endif
+#ifdef master
+			getline(file, line);
+			temp.firstName = line;
+#endif
 			student.push_back(temp);
+
 		}
 	}
 	else {
@@ -36,7 +51,14 @@ int main()
 	
 #ifdef _DEBUG
 	for (int i = 0; i < student.size(); i++) {
-		cout << student[i].lastName << ", " << student[i].firstName << endl;
+		cout << student[i].lastName << ", " << student[i].firstName;
+#ifdef master
+		cout << endl;
+#endif
+#ifndef master
+		cout << ", " << student[i].email << endl;
+#endif
+
 	}
 #endif // _DEBUG
 
